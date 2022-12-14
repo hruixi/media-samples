@@ -226,11 +226,13 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
         final WindowInsetsControllerCompat insetsController =
                 ViewCompat.getWindowInsetsController(getWindow().getDecorView());
         if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            insetsController.hide(WindowInsetsCompat.Type.systemBars());
+            if (insetsController != null)
+                insetsController.hide(WindowInsetsCompat.Type.systemBars());
             mScrollView.setVisibility(View.GONE);
             mMovieView.setAdjustViewBounds(false);
         } else {
-            insetsController.show(WindowInsetsCompat.Type.systemBars());
+            if (insetsController != null)
+                insetsController.show(WindowInsetsCompat.Type.systemBars());
             mScrollView.setVisibility(View.VISIBLE);
             mMovieView.setAdjustViewBounds(true);
         }
