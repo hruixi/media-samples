@@ -20,6 +20,7 @@ import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -192,14 +193,17 @@ class MovieActivity : AppCompatActivity() {
         // The movie view turns into the picture-in-picture mode.
         val visibleRect = Rect()
         binding.movie.getGlobalVisibleRect(visibleRect)
-        val params = PictureInPictureParams.Builder()
+        val builder = PictureInPictureParams.Builder()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // The screen automatically turns into the picture-in-picture mode when it is hidden
+            // by the "Home" button.
+            builder.setAutoEnterEnabled(true)
+        }
+        val params = builder
             .setAspectRatio(aspectRatio)
             // Specify the portion of the screen that turns into the picture-in-picture mode.
             // This makes the transition animation smoother.
             .setSourceRectHint(visibleRect)
-            // The screen automatically turns into the picture-in-picture mode when it is hidden
-            // by the "Home" button.
-            .setAutoEnterEnabled(true)
             .build()
         setPictureInPictureParams(params)
         return params
